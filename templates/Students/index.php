@@ -1,0 +1,61 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var iterable<\App\Model\Entity\Student> $students
+ */
+?>
+<div class="students index content">
+    <?= $this->Html->link(__('New Student'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <h3><?= __('Students') ?></h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= $this->Paginator->sort('nis') ?></th>
+                    <th><?= $this->Paginator->sort('name') ?></th>
+                    <th><?= $this->Paginator->sort('created') ?></th>
+                    <th><?= $this->Paginator->sort('modified') ?></th>
+                    <th><?= $this->Paginator->sort('user_id') ?></th>
+                    <th><?= $this->Paginator->sort('user_group_id') ?></th>
+                    <th class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($students as $student): ?>
+                <tr>
+                    <td><?= $this->Number->format($student->id) ?></td>
+                    <td><?= $this->Number->format($student->nis) ?></td>
+                    <td><?= h($student->name) ?></td>
+                    <td><?= h($student->created) ?></td>
+                    <td><?= h($student->modified) ?></td>
+                    <td><?= $student->hasValue('user') ? $this->Html->link($student->user->email, ['controller' => 'Users', 'action' => 'view', $student->user->id]) : '' ?></td>
+                    <td><?= $student->hasValue('user_group') ? $this->Html->link($student->user_group->id, ['controller' => 'UserGroups', 'action' => 'view', $student->user_group->id]) : '' ?></td>
+                    <td class="actions">
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $student->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $student->id]) ?>
+                        <?= $this->Form->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $student->id],
+                            [
+                                'method' => 'delete',
+                                'confirm' => __('Are you sure you want to delete # {0}?', $student->id),
+                            ]
+                        ) ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="paginator">
+        <ul class="pagination">
+            <?= $this->Paginator->first('<< ' . __('first')) ?>
+            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next(__('next') . ' >') ?>
+            <?= $this->Paginator->last(__('last') . ' >>') ?>
+        </ul>
+        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+    </div>
+</div>
